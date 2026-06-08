@@ -8,6 +8,7 @@ import plotly.express as px
 from datetime import datetime, date, timedelta
 from io import StringIO
 from typing import Optional
+from supabase import create_client
 import streamlit.components.v1 as components
 import warnings
 import os; os.system("pip install plotly pandas requests")
@@ -48,6 +49,9 @@ ARGO_DIR        = r"C:\Akros\Argo"
 BASE_DIR        = r"C:\akros"
 LIVE_SCAN_PATH  = r"C:\akros\live_scan.json"
 LIVE_SCAN_KR_PATH  = r"C:\akros\live_scan_kr.json"
+SUPABASE_URL = "https://pwuuudmiyxmxqipcpifb.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB3dXV1ZG1peXhteHFpcGNwaWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MTIzNjEsImV4cCI6MjA5NjQ4ODM2MX0.Sg7dfEKc6E2SaF2cqYj-1nxdt3WutetJ6lYOFZtYPxM"
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 REFRESH_SEC     = 5
 
 # 분리된 DB 파일 경로
