@@ -10,6 +10,7 @@ from io import StringIO
 from typing import Optional
 import streamlit.components.v1 as components
 import warnings
+import os; os.system("pip install plotly pandas requests")
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 try:
