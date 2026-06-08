@@ -64,6 +64,29 @@ DB_ANALYSIS     = os.path.join(ARGO_DIR, "akros_analysis.db")    # 분석 결과
 
 os.makedirs(ARGO_DIR, exist_ok=True)
 
+def _safe_read_sql(db_path, query):
+    try:
+        match = re.search(r"from\s+[\"']?(\w+)[\"']?", query, re.IGNORECASE)
+        if not match:
+            return pd.DataFrame()
+        
+        table_name = match.group(1)
+        
+        # 주소에 global이 있으면 global_trade_history, kr이 있으면 kr_trade_history로 자동 분기
+        if table_name == "trade_history":
+            if "global" in str(db_path).lower():
+                table_name = "global_trade_history"
+            elif "kr" in str(db_path).lower():
+                table_name = "kr_trade_history"
+        
+        response = supabase.table(table_name).select("*").execute()
+        df = pd.DataFrame(response.data)
+        return df
+        
+    except Exception as e:
+        st.error(f"☁️ 클라우드 데이터 로드 실패 ({query}): {e}")
+        return pd.DataFrame()
+
 # ══════════════════════════════════════════════════
 # [SECTION 1] CAPITAL & RISK PARAMETERS (변경 없음)
 # ══════════════════════════════════════════════════
